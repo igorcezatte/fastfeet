@@ -18,9 +18,7 @@ export default async (req, res, next) => {
 
     req.userId = decoded.id;
 
-    const userLogged = await User.findOne({
-      where: { id: req.userId },
-    });
+    const userLogged = await User.findByPk(req.userId);
 
     if (!userLogged.admin) {
       return res.status(400).json({ error: 'Only administrator can do this' });
