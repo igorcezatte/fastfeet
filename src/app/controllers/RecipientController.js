@@ -40,7 +40,7 @@ class RecipientController {
     if (recipientExists) {
       return res
         .status(400)
-        .json({ error: 'This Recipient is already registered in application' });
+        .json({ error: 'This name is already used for another Recipient' });
     }
 
     const {
@@ -54,6 +54,40 @@ class RecipientController {
     } = await Recipient.create(req.body);
 
     return res.json({ name, street, number, complement, uf, city, zip_code });
+  }
+
+  async update(req, res) {
+    const schema = Yup.object().shape({
+      name: Yup.string(),
+      street: Yup.string(),
+      uf: Yup.string().max(2),
+      city: Yup.string(),
+      zip_code: Yup.string(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails' });
+    }
+
+    const { name } = req.body;
+
+    const recipient = await Recipient.findByPk(req.params.id);
+
+    if (name && name !== recipient.name) {
+      const recipientExists = await Recipient.findOne({
+        where: { name: req.body.name },
+      });
+
+      if (recipientExists) {
+        return res
+          .status(400)
+          .json({ error: 'This name is already used for another Recipient' });
+      }
+    }
+
+    const updatedRecipient = await recipient.update(req.body);
+
+    return res.json(updatedRecipient);
   }
 }
 
