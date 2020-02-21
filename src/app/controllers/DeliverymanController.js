@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import Deliveryman from '../models/Deliveryman';
+import File from '../models/File';
 
 class DeliverymanController {
   async index(req, res) {
@@ -21,13 +22,13 @@ class DeliverymanController {
     }
 
     const deliverymanExists = await Deliveryman.findOne({
-      where: { name: req.body.name },
+      where: { email: req.body.email },
     });
 
     if (deliverymanExists) {
       return res
         .status(400)
-        .json({ error: 'This name is already used for another deliveryman' });
+        .json({ error: 'This email is already used for another deliveryman' });
     }
 
     const { name, email } = await Deliveryman.create(req.body);
@@ -45,20 +46,26 @@ class DeliverymanController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    const { name } = req.body;
+    const { email, avatar_id } = req.body;
 
     const deliveryman = await Deliveryman.findByPk(req.params.id);
 
-    if (name && name !== deliveryman.name) {
+    if (email && email !== deliveryman.email) {
       const deliverymanExists = await Deliveryman.findOne({
-        where: { name: req.body.name },
+        where: { email: req.body.email },
       });
 
       if (deliverymanExists) {
         return res
           .status(400)
-          .json({ error: 'This name is already used for another Recipient' });
+          .json({ error: 'This email is already used for another Recipient' });
       }
+    }
+
+    const avatar = await File.findByPk(avatar_id);
+
+    if (!avatar) {
+      return res.status(400).json({ error: 'Avatar id does not exist' });
     }
 
     const updatedDeliveryman = await deliveryman.update(req.body);
