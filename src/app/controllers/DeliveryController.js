@@ -52,37 +52,33 @@ class DeliveryController {
   }
 
   async store(req, res) {
-    const schema = Yup.object(req.body).shape({
+    const schema = Yup.object().shape({
       product: Yup.string().required(),
       recipient_id: Yup.number().required(),
       deliveryman_id: Yup.number().required(),
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fail' });
+      return res.status(400).json({ error: 'Validation fails' });
     }
 
     const { deliveryman_id, recipient_id, product } = req.body;
 
-    const checkDeliverymanExists = await Deliveryman.findOne({
-      where: { id: deliveryman_id },
-    });
+    const deliveryman = await Deliveryman.findByPk(deliveryman_id);
 
-    const checkRecipientExists = await Recipient.findOne({
-      where: { id: recipient_id },
-    });
+    const recipient = await Recipient.findByPk(recipient_id);
 
-    if (!(checkDeliverymanExists || checkRecipientExists)) {
+    if (!(deliveryman || recipient)) {
       return res
         .status(400)
         .json({ error: 'Deliveryman and Recipient does not exists' });
     }
 
-    if (!checkRecipientExists) {
+    if (!recipient) {
       return res.status(400).json({ error: 'Recipient does not exists' });
     }
 
-    if (!checkDeliverymanExists) {
+    if (!deliveryman) {
       return res.status(400).json({ error: 'Deliveryman does not exists' });
     }
 
