@@ -4,6 +4,8 @@ import Deliveryman from '../models/Deliveryman';
 import File from '../models/File';
 import Recipient from '../models/Recipient';
 
+import Mail from '../../lib/Mail';
+
 class DeliveryController {
   async index(req, res) {
     const deliveries = await Delivery.findAll({
@@ -86,6 +88,12 @@ class DeliveryController {
       product,
       deliveryman_id,
       recipient_id,
+    });
+
+    await Mail.sendMail({
+      to: `${deliveryman.name} <${deliveryman.email}>`,
+      subject: `New delivery to you`,
+      text: `You have a new delivery`,
     });
 
     return res.json(delivery);
