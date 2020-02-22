@@ -90,6 +90,52 @@ class DeliveryController {
 
     return res.json(delivery);
   }
+
+  async update(req, res) {
+    const schema = Yup.object().shape({
+      product: Yup.string().required(),
+      recipient_id: Yup.number().required(),
+      deliveryman_id: Yup.number().required(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails' });
+    }
+
+    const { deliveryman_id, recipient_id, product } = req.body;
+
+    const delivery = await Delivery.findByPk(req.params.id);
+
+    if (!delivery) {
+      return res.status(400).json({ error: 'Delivery ID not found' });
+    }
+
+    const deliveryman = await Deliveryman.findByPk(deliveryman_id);
+
+    const recipient = await Recipient.findByPk(recipient_id);
+
+    if (!(deliveryman || recipient)) {
+      return res
+        .status(400)
+        .json({ error: 'Deliveryman and Recipient does not exists' });
+    }
+
+    if (!recipient) {
+      return res.status(400).json({ error: 'Recipient does not exists' });
+    }
+
+    if (!deliveryman) {
+      return res.status(400).json({ error: 'Deliveryman does not exists' });
+    }
+
+    const updatedDelivery = await delivery.update({
+      product,
+      deliveryman_id,
+      recipient_id,
+    });
+
+    return res.json(updatedDelivery);
+  }
 }
 
 export default new DeliveryController();
