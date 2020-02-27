@@ -95,6 +95,7 @@ class DeliveryController {
     await Queue.add(NewDeliveryMail.key, {
       deliveryman,
       recipient,
+      product,
     });
 
     return res.json(delivery);
