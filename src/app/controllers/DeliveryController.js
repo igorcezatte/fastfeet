@@ -31,6 +31,7 @@ class DeliveryController {
             'number',
             'uf',
             'city',
+            'neighborhood',
             'complement',
           ],
         },
@@ -92,8 +93,18 @@ class DeliveryController {
 
     await Mail.sendMail({
       to: `${deliveryman.name} <${deliveryman.email}>`,
-      subject: `New delivery to you`,
-      text: `You have a new delivery`,
+      subject: `New delivery available`,
+      template: 'newDelivery',
+      context: {
+        deliveryman: deliveryman.name,
+        recipientName: recipient.name,
+        recipientUF: recipient.uf,
+        recipientCity: recipient.city,
+        recipientNeighborhood: recipient.neighborhood,
+        recipientStreet: recipient.street,
+        recipientNumber: recipient.number,
+        recipientComplement: recipient.complement,
+      },
     });
 
     return res.json(delivery);
