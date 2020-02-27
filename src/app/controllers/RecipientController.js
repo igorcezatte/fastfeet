@@ -11,6 +11,7 @@ class RecipientController {
         'complement',
         'uf',
         'city',
+        'neighborhood',
         'zip_code',
       ],
     });
@@ -26,6 +27,7 @@ class RecipientController {
         .max(2)
         .required(),
       city: Yup.string().required(),
+      neighborhood: Yup.string().required(),
       zip_code: Yup.string().required(),
     });
 
@@ -50,10 +52,20 @@ class RecipientController {
       complement,
       uf,
       city,
+      neighborhood,
       zip_code,
     } = await Recipient.create(req.body);
 
-    return res.json({ name, street, number, complement, uf, city, zip_code });
+    return res.json({
+      name,
+      street,
+      number,
+      complement,
+      uf,
+      city,
+      neighborhood,
+      zip_code,
+    });
   }
 
   async update(req, res) {
@@ -62,6 +74,7 @@ class RecipientController {
       street: Yup.string(),
       uf: Yup.string().max(2),
       city: Yup.string(),
+      neighborhood: Yup.string(),
       zip_code: Yup.string(),
     });
 
