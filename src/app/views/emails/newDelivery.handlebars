@@ -1,15 +1,18 @@
-<strong>Hi, {{ deliveryman }}</strong>
-<p>There is a new item available for delivery. Check the details of the recipient below:</p>
+<strong>Olá, {{ deliveryman }}!</strong>
+<p>Há um novo produto disponível para entrega. Confira abaixo detalhes da entrega:</p>
+
+<p><strong>Produto: </strong> {{ product }}</p>
 <p>
-  <strong>Name: </strong> {{ recipientName }} <br />
-  <strong>State: </strong> {{ recipientUF }} <br />
-  <strong>City: </strong> {{ recipientCity }} <br />
-  <strong>Neighborhood: </strong> {{ recipientNeighborhood }} <br />
-  <strong>Street: </strong> {{ recipientStreet }} <br />
-  <strong>Number: </strong> {{ recipientNumber }} <br />
-  <strong>Complement: </strong> {{ recipientComplement }} <br />
+  <strong>Informações do destinatário: </strong> <br />
+  <strong>Nome: </strong> {{ recipientName }} <br />
+  <strong>Estado: </strong> {{ recipientUF }} <br />
+  <strong>Cidade: </strong> {{ recipientCity }} <br />
+  <strong>Bairro: </strong> {{ recipientNeighborhood }} <br />
+  <strong>Rua: </strong> {{ recipientStreet }} <br />
+  <strong>Número: </strong> {{ recipientNumber }} <br />
+  <strong>Complemento: </strong> {{ recipientComplement }} <br />
   <br />
   <strong>
-    Thanks for the collaboration!
+    Agradecemos a sua colaboração!
   </strong>
 </p>
