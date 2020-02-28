@@ -10,6 +10,7 @@ import RecipientController from './app/controllers/RecipientController';
 import FileController from './app/controllers/FileController';
 import DeliverymanController from './app/controllers/DeliverymanController';
 import DeliveryController from './app/controllers/DeliveryController';
+import DeliveryStatusController from './app/controllers/DeliveryStatusController';
 
 const routes = new Router();
 const upload = multer(multerConfig);
@@ -34,5 +35,11 @@ routes.post('/files', upload.single('file'), FileController.store);
 routes.get('/deliveries', DeliveryController.index);
 routes.post('/deliveries', DeliveryController.store);
 routes.put('/deliveries/:id', DeliveryController.update);
+
+routes.get('/deliveryman/:id', DeliveryStatusController.index);
+routes.get(
+  '/deliveryman/:deliverymanId/:deliveryId',
+  DeliveryStatusController.show
+);
 
 module.exports = routes;
