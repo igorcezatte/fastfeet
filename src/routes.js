@@ -38,7 +38,7 @@ routes.put('/deliveries/:id', DeliveryController.update);
 
 routes.get('/deliveryman/:id', DeliveryStatusController.index);
 routes.get(
-  '/deliveryman/:deliverymanId/:deliveryId',
+  '/deliveryman/finished/:deliverymanId',
   DeliveryStatusController.show
 );
 
