@@ -129,9 +129,6 @@ class DeliveryStatusController {
 
     const startDate = parseISO(req.body.start_date);
     const endDate = parseISO(req.body.end_date);
-    if (req.body.end_date) {
-      const { signature_id } = req.body;
-    }
 
     if (req.body.start_date && req.body.end_date) {
       return res.status(400).json({
@@ -154,41 +151,45 @@ class DeliveryStatusController {
     const beginPeriod = setSeconds(setMinutes(setHours(startDate, 8), 0), 0);
     const endPeriod = setSeconds(setMinutes(setHours(startDate, 18), 0), 0);
 
-    if (isAfter(startDate, endPeriod) || isBefore(startDate, beginPeriod)) {
+    if (
+      req.body.start_date &&
+      (isAfter(startDate, endPeriod) || isBefore(startDate, beginPeriod))
+    ) {
       return res.status(400).json({
         error:
           'You cannot update the delivery status at now. The registration period is between 08:00 and 18:00h',
       });
     }
 
-    const deliveriesPerDay = await Delivery.findAll({
-      where: {
-        deliveryman_id: deliverymanId,
-        start_date: {
-          [Op.between]: [startOfDay(startDate), endOfDay(startDate)],
+    if (req.body.start_date) {
+      const deliveriesPerDay = await Delivery.findAll({
+        where: {
+          deliveryman_id: deliverymanId,
+          start_date: {
+            [Op.between]: [startOfDay(startDate), endOfDay(startDate)],
+          },
         },
-      },
-    });
+      });
 
-    if (deliveriesPerDay.length > 5) {
-      return res
-        .status(400)
-        .json({ error: 'you can only deliver five deliveries a day' });
+      if (deliveriesPerDay.length > 5) {
+        return res
+          .status(400)
+          .json({ error: 'you can only deliver five deliveries a day' });
+      }
+    }
+
+    if (req.body.start_date) {
+      await delivery.update({ start_date: startDate });
     }
 
     if (req.body.end_date) {
-      const status = await delivery.update(req.body, {
-        attributes: ['start_date', 'end_date', 'signature_id'],
+      await delivery.update({
+        end_date: endDate,
+        signature_id: req.body.signature_id,
       });
-
-      return res.json(status);
     }
 
-    const status = await delivery.update(req.body, {
-      attributes: ['start_date', 'end_date'],
-    });
-
-    return res.json(status);
+    return res.json(delivery);
   }
 }
 
