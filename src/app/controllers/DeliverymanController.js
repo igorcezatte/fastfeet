@@ -31,9 +31,9 @@ class DeliverymanController {
         .json({ error: 'This email is already used for another deliveryman' });
     }
 
-    const { name, email } = await Deliveryman.create(req.body);
+    const { id, name, email } = await Deliveryman.create(req.body);
 
-    return res.json({ name, email });
+    return res.json({ id, name, email });
   }
 
   async update(req, res) {
@@ -75,6 +75,22 @@ class DeliverymanController {
     const updatedDeliveryman = await deliveryman.update(req.body);
 
     return res.json(updatedDeliveryman);
+  }
+
+  async delete(req, res) {
+    const { id } = req.params;
+
+    const deliveryman = await Deliveryman.findByPk(id);
+
+    const name = deliveryman ? deliveryman.name : null;
+
+    await Deliveryman.destroy({ where: { id } });
+
+    if (!deliveryman) {
+      return res.status(400).json({ error: 'Deliveryman Id does not exist' });
+    }
+
+    return res.json({ message: `Deliveryman ${name} deleted` });
   }
 }
 
