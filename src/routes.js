@@ -41,5 +41,9 @@ routes.get(
   '/deliveryman/finished/:deliverymanId',
   DeliveryStatusController.show
 );
+routes.put(
+  '/deliveryman/:deliverymanId/:deliveryId',
+  DeliveryStatusController.update
+);
 
 module.exports = routes;
