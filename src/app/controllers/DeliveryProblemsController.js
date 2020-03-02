@@ -4,6 +4,22 @@ import DeliveryProblem from '../models/DeliveryProblem';
 import Delivery from '../models/Delivery';
 
 class DeliveryProblemsController {
+  async index(req, res) {
+    const { delivery_id } = req.params;
+
+    const deliveryProblems = await DeliveryProblem.findAll({
+      where: { delivery_id },
+    });
+
+    if (!deliveryProblems) {
+      return res
+        .status(400)
+        .json({ message: 'This delivery has no problems associeted' });
+    }
+
+    return res.json(deliveryProblems);
+  }
+
   async store(req, res) {
     const schema = Yup.object().shape({
       description: Yup.string().required(),
