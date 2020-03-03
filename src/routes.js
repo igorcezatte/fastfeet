@@ -55,5 +55,9 @@ routes.put('/deliveries/:id', DeliveryController.update);
 routes.delete('/deliveries/:id', DeliveryController.delete);
 
 routes.get('/delivery/:delivery_id/problems', DeliveryProblemsController.index);
+routes.delete(
+  '/problem/:id/cancel-delivery',
+  DeliveryProblemsController.delete
+);
 
 module.exports = routes;

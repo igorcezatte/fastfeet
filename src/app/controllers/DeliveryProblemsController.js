@@ -46,6 +46,30 @@ class DeliveryProblemsController {
 
     return res.json(deliveryProblem);
   }
+
+  async delete(req, res) {
+    const { id } = req.params;
+
+    const problem = await DeliveryProblem.findByPk(id);
+
+    if (!problem) {
+      return res.status(400).json({ error: 'Problem Id does not exist' });
+    }
+
+    const delivery = await Delivery.findByPk(problem.delivery_id);
+
+    if (delivery.end_date != null) {
+      return res.status(400).json({
+        error: 'This Delivery is already finished, you cannot cancel that',
+      });
+    }
+
+    const updatedDelivery = await delivery.update({
+      canceled_at: new Date(),
+    });
+
+    return res.json(updatedDelivery);
+  }
 }
 
 export default new DeliveryProblemsController();
