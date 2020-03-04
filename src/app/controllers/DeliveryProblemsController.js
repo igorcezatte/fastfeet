@@ -2,6 +2,10 @@ import * as Yup from 'yup';
 
 import DeliveryProblem from '../models/DeliveryProblem';
 import Delivery from '../models/Delivery';
+import Deliveryman from '../models/Deliveryman';
+
+import Queue from '../../lib/Queue';
+import CancelDeliveryMail from '../jobs/CancelDeliveryMail';
 
 class DeliveryProblemsController {
   async index(req, res) {
@@ -58,6 +62,8 @@ class DeliveryProblemsController {
 
     const delivery = await Delivery.findByPk(problem.delivery_id);
 
+    const deliveryman = await Deliveryman.findByPk(delivery.deliveryman_id);
+
     if (delivery.end_date != null) {
       return res.status(400).json({
         error: 'This Delivery is already finished, you cannot cancel that',
@@ -66,6 +72,12 @@ class DeliveryProblemsController {
 
     const updatedDelivery = await delivery.update({
       canceled_at: new Date(),
+    });
+
+    await Queue.add(CancelDeliveryMail.key, {
+      deliveryman,
+      delivery,
+      problem,
     });
 
     return res.json(updatedDelivery);
