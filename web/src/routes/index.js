@@ -13,9 +13,9 @@ export default function Routes() {
     <Switch>
       <Route path="/" exact component={SignIn} />
       <Route path="/deliverymen" component={Deliverymen} isPrivate />
-      <Route path="/recipients" component={Recipients} />
-      <Route path="/deliveries" component={Deliveries} />
-      <Route path="/problems" component={Problems} />
+      <Route path="/recipients" component={Recipients} isPrivate />
+      <Route path="/deliveries" component={Deliveries} isPrivate />
+      <Route path="/problems" component={Problems} isPrivate />
     </Switch>
   );
 }
