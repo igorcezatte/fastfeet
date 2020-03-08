@@ -24,7 +24,9 @@ export const Content = styled.div`
   }
 
   label {
+    margin: 0 0 10px;
     text-align: left;
+    font-weight: bold;
   }
 
   form {
@@ -41,6 +43,13 @@ export const Content = styled.div`
     padding: 0 15px;
     margin: 0 0 10px;
     opacity: 1;
+  }
+
+  span {
+    color: #f64c75;
+    align-self: flex-start;
+    margin: 0 0 10px;
+    font-weight: bold;
   }
 
   button {
