@@ -19,7 +19,7 @@ export default function Header() {
         <aside>
           <Profile>
             <strong>Nome usuário logado</strong>
-            <button type="button">sair do sistema</button>
+            <Link to="/">sair do sistema</Link>
           </Profile>
         </aside>
       </Content>
