@@ -3,7 +3,7 @@ import React from 'react';
 import { MdSearch, MdAdd } from 'react-icons/md';
 
 import PageHeader from '~/components/PageHeader';
-import { Container, Content } from './styles';
+import { Container, Content, Grid } from './styles';
 
 export default function Deliveries() {
   return (
@@ -23,6 +23,18 @@ export default function Deliveries() {
               </button>
             </div>
           </PageHeader>
+
+          <Grid>
+            <section>
+              <strong>ID</strong>
+              <strong>Destinatário</strong>
+              <strong>Entregador</strong>
+              <strong>Cidade</strong>
+              <strong>Estado</strong>
+              <strong>Status</strong>
+              <strong>Ações</strong>
+            </section>
+          </Grid>
         </Content>
       </Container>
     </>

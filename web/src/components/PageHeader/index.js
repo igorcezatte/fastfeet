@@ -4,12 +4,11 @@ import PropTypes from 'prop-types';
 
 import { Container } from './styles';
 
-export default function HeaderList({ title, children }) {
+export default function HeaderList({ children }) {
   return <Container>{children}</Container>;
 }
 
 HeaderList.propTypes = {
-  title: PropTypes.string.isRequired,
   children: PropTypes.arrayOf(PropTypes.element),
 };
 
